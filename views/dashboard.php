@@ -1,28 +1,27 @@
-<!-- views/dashboard.php -->
-
 <?php
-session_start();
-if (!isset($_SESSION['user'])) {
-    header('Location: login.php');
-    exit;
+// views/dashboard.php
+
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
 }
 
-$user = $_SESSION['user'];
+require_once '../config/auth.php';
+
+redirectIfNotLoggedIn();
+checkAccess($_SESSION['user']['role'], ['admin', 'vendedor']);
+
+$pageTitle = 'Dashboard';
+$customCSS = [];
+include 'header.php';
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container">
-        <h2>Dashboard</h2>
-        <p>Bem-vindo, <?php echo htmlspecialchars($user['username']); ?>!</p>
-        <p><a href="../public/logout.php" class="btn btn-danger">Logout</a></p>
+<div class="container mt-5">
+    <h2 class="text-center">Dashboard</h2>
+    <p class="text-center">Bem-vindo, <?php echo htmlspecialchars($_SESSION['user']['username']); ?>!</p>
+
+    <div class="text-center mt-4">
+        <a href="/oficina/views/materials/create.php" class="btn btn-primary">Cadastrar Novo Material</a>
     </div>
-</body>
-</html>
+</div>
+
+<?php include 'footer.php'; ?>

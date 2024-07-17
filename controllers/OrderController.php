@@ -10,7 +10,7 @@ $action = $_POST['action'];
 switch ($action) {
     case 'buy':
         session_start();
-        var_dump($_SESSION); // Debug para verificar informações da sessão
+        //var_dump($_SESSION); // Debug para verificar informações da sessão
         $user_id = $_SESSION['user']['id'];
         $seller_id = $_POST['seller_id']; // Obter o vendedor selecionado
         $product_id = $_POST['product_id'];

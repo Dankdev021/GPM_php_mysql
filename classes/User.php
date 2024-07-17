@@ -57,5 +57,11 @@ class User implements IUser {
         $stmt = $this->db->prepare("INSERT INTO users (username, password, role) VALUES (?, ?, ?)");
         return $stmt->execute([$username, $password, $role]);
     }
+
+    public function getUsersByRole($role) {
+        $stmt = $this->db->prepare("SELECT id, username FROM users WHERE role = ?");
+        $stmt->execute([$role]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

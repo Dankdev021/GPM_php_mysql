@@ -63,7 +63,7 @@ switch ($action) {
 
         $pdo = db_connect();
         $serviceOrderModel = new ServiceOrder($pdo);
-        if ($serviceOrderModel->create($service_id, $user_id, $seller_id)) {
+        if ($serviceOrderModel->createOrder($service_id, $user_id, $seller_id)) {
             header('Location: ../views/services/index.php');
         } else {
             echo "Erro ao contratar serviço.";

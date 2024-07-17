@@ -37,5 +37,15 @@ class Order implements IOrder {
         $stmt->execute([$seller_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getAllOrders() {
+        $stmt = $this->db->query("SELECT orders.id, products.name as product_name, orders.quantity, orders.price, sellers.username as seller_name, customers.username as customer_name, orders.created_at FROM orders INNER JOIN products ON orders.product_id = products.id INNER JOIN users as sellers ON orders.seller_id = sellers.id INNER JOIN users as customers ON orders.customer_id = customers.id");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalSalesAmount() {
+        $stmt = $this->db->query("SELECT SUM(price * quantity) as total FROM orders");
+        return $stmt->fetch(PDO::FETCH_ASSOC)['total'];
+    }
 }
 ?>

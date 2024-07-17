@@ -17,7 +17,6 @@ try {
             $vehicle_license_plate = $_POST['vehicle_license_plate'];
             $description = $_POST['description'];
             $estimated_cost = $_POST['estimated_cost'];
-             var_dump($customer_id, $vehicle_model, $vehicle_license_plate, $description, $estimated_cost );
     
             $pdo = db_connect();
             $serviceOrderModel = new ServiceOrder($pdo);

@@ -3,10 +3,10 @@ session_start();
 require_once '../../config/auth.php';
 
 redirectIfNotLoggedIn();
-checkAccess($_SESSION['user']['role'], ['admin', 'vendedor', 'cliente']);
+checkAccess($_SESSION['user']['role'], ['admin', 'vendedor']);
 
 $pageTitle = 'Ordens de Serviço';
-$customCSS = ['services/index.css'];
+$customCSS = ['services/style.css'];
 include '../header.php';
 
 require_once '../../config/Config.php';
@@ -14,7 +14,12 @@ require_once '../../classes/ServiceOrder.php';
 
 $pdo = db_connect();
 $serviceOrderModel = new ServiceOrder($pdo);
-$serviceOrders = $serviceOrderModel->getAll();
+
+if ($_SESSION['user']['role'] === 'vendedor') {
+    $serviceOrders = $serviceOrderModel->getByMechanic($_SESSION['user']['id']);
+} else {
+    $serviceOrders = $serviceOrderModel->getAll();
+}
 ?>
 
 <div class="container mt-5">

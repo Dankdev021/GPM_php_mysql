@@ -56,6 +56,9 @@ if (session_status() == PHP_SESSION_NONE) {
                         <li class="nav-item">
                             <a class="nav-link" href="/oficina/views/services/create.php">Serviços</a>
                         </li>
+                        <!-- <li class="nav-item">
+                            <a class="nav-link" href="/oficina/views/services/index.php">Meus serviços</a>
+                        </li> -->
                     <?php endif; ?>
                     <li class="nav-item">
                         <a class="nav-link btn btn-danger text-light" href="/oficina/controllers/UserController.php?action=logout">Logout</a>

@@ -2,12 +2,11 @@
 session_start();
 require_once '../../config/auth.php';
 
+$pageTitle = 'Minhas Vendas';
+include '../header.php';
+
 redirectIfNotLoggedIn();
 checkAccess($_SESSION['user']['role'], ['vendedor']);
-
-$pageTitle = 'Minhas Vendas';
-$customCSS = ['sales/style.css'];
-include '../header.php';
 
 require_once '../../config/Config.php';
 require_once '../../classes/Order.php';
@@ -42,5 +41,5 @@ $sales = $orderModel->getBySellerId($_SESSION['user']['id']);
 </div>
 
 <?php
-include 'footer.php';
+include '../footer.php';
 ?>

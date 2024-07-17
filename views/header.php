@@ -31,25 +31,30 @@ if (session_status() == PHP_SESSION_NONE) {
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <?php if (isset($_SESSION['user'])): ?>
-                    <?php if ($_SESSION['user']['role'] === 'admin' || $_SESSION['user']['role'] === 'vendedor'): ?>
+                    <?php if ($_SESSION['user']['role'] === 'admin'): ?>
                         <li class="nav-item">
-                            <a class="nav-link btn btn-outline-success text-light" href="/oficina/views/dashboard.php">Dashboard</a>
+                            <a class="nav-link btn btn-success text-light" href="/oficina/views/dashboard.php">Dashboard</a>
                         </li>
-                        <?php if ($_SESSION['user']['role'] === 'vendedor'): ?>
-                            <li class="nav-item">
-                                <a class="nav-link btn btn-outline-success text-light" href="/oficina/views/sales/index.php">Minhas Vendas</a>
-                            </li>
-                        <?php endif; ?>
+                    <?php elseif ($_SESSION['user']['role'] === 'vendedor'): ?>
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-success text-light" href="/oficina/views/dashboard.php">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/oficina/views/sales/index.php">Minhas Vendas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/oficina/views/services/index.php">Meus serviços</a>
+                        </li>
                     <?php endif; ?>
                     <?php if ($_SESSION['user']['role'] === 'cliente'): ?>
                         <li class="nav-item">
-                            <a class="nav-link btn btn-outline-success text-light" href="/oficina/views/purchases.php">Compras</a>
+                            <a class="nav-link" href="/oficina/views/purchases.php">Compras</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link btn btn-outline-success text-light" href="/oficina/views/materials/index.php">Catálogo</a>
+                            <a class="nav-link" href="/oficina/views/materials/index.php">Catálogo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link btn btn-outline-success text-light" href="/oficina/views/services/index.php">Serviços</a>
+                            <a class="nav-link" href="/oficina/views/services/create.php">Serviços</a>
                         </li>
                     <?php endif; ?>
                     <li class="nav-item">
@@ -57,13 +62,12 @@ if (session_status() == PHP_SESSION_NONE) {
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-light" href="/oficina/views/login.php">Login</a>
+                        <a class="nav-link" href="/oficina/views/login.php">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-light" href="/oficina/views/register.php">Registrar</a>
+                        <a class="nav-link" href="/oficina/views/register.php">Registrar</a>
                     </li>
                 <?php endif; ?>
             </ul>
         </div>
     </nav>
-

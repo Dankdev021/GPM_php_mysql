@@ -29,7 +29,7 @@ include 'header.php';
             </div>
             <button type="submit" class="btn btn-primary btn-block">Register</button>
         </form>
-        <p class="text-center mt-3">Already have an account? <a href="login.php">Login</a></p>
+        <p class="text-center mt-3">Possui uma conta? <a href="login.php">Login</a></p>
     </div>
 </div>
 

@@ -16,9 +16,7 @@ $role = $_SESSION['user']['role'];
     <p class="text-center">Bem-vindo, <?php echo htmlspecialchars($_SESSION['user']['username']); ?>!</p>
 
     <?php if ($role === 'admin'): ?>
-        <div class="text-center mt-4">
-            <a href="materials/create.php" class="btn btn-primary">Cadastrar Novo Material</a>
-        </div>
+        <?php require "../views/admin/admin_dashboard.php"; ?>
     <?php endif; ?>
 
     <?php if ($role === 'vendedor'): ?>

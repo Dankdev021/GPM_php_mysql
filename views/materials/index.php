@@ -53,7 +53,11 @@ $materials = $materialModel->getAll();
                         </td>
                     <?php elseif ($_SESSION['user']['role'] === 'cliente'): ?>
                         <td>
-                            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#buyModal" data-id="<?php echo $material['id']; ?>" data-name="<?php echo htmlspecialchars($material['name']); ?>" data-quantity="<?php echo $material['quantity']; ?>">Comprar</button>
+                        <?php if ($material['quantity'] > 0): ?>
+                                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#buyModal" data-id="<?php echo $material['id']; ?>" data-name="<?php echo htmlspecialchars($material['name']); ?>" data-quantity="<?php echo $material['quantity']; ?>">Comprar</button>
+                            <?php else: ?>
+                                <span class="text-danger">Sem estoque</span>
+                            <?php endif; ?>
                         </td>
                     <?php endif; ?>
                 </tr>
@@ -78,7 +82,18 @@ $materials = $materialModel->getAll();
                     <input type="hidden" name="product_id" id="modalProductId">
                     <div class="form-group">
                         <label for="modalProductName">Nome</label>
-                        <input type="text" class="form-control" id="modalProductName" readonly>
+                        <p id="modalProductName"></p>
+                    </div>
+                    <div class="form-group">
+                        <label for="seller_id">Vendedor</label>
+                        <select name="seller_id" class="form-control" required>
+                            <option value="" selected disabled>Selecione um Vendedor</option>
+                            <?php
+                            $stmt = $pdo->query("SELECT id, username FROM users WHERE role = 'vendedor'");
+                            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
+                                <option value="<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['username']); ?></option>
+                            <?php endwhile; ?>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="quantity">Quantidade</label>
@@ -96,28 +111,30 @@ $materials = $materialModel->getAll();
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var buyModal = document.getElementById('buyModal');
-    buyModal.addEventListener('show.bs.modal', function (event) {
-        var button = event.relatedTarget;
-        var id = button.getAttribute('data-id');
-        var name = button.getAttribute('data-name');
-        var quantity = button.getAttribute('data-quantity');
-        
-        var modalProductId = buyModal.querySelector('#modalProductId');
-        var modalProductName = buyModal.querySelector('#modalProductName');
-        var modalQuantity = buyModal.querySelector('#modalQuantity');
-        var quantityHelp = buyModal.querySelector('#quantityHelp');
+    document.addEventListener('DOMContentLoaded', function() {
+    var buyButtons = document.querySelectorAll('.btn-primary[data-toggle="modal"]');
+    
+    buyButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            var id = button.getAttribute('data-id');
+            var name = button.getAttribute('data-name');
+            var quantity = button.getAttribute('data-quantity');
 
-        modalProductId.value = id;
-        modalProductName.value = name;
-        modalQuantity.setAttribute('max', quantity);
-        quantityHelp.textContent = 'Quantidade disponível: ' + quantity;
+            var modalProductId = document.getElementById('modalProductId');
+            var modalProductName = document.getElementById('modalProductName');
+            var modalQuantity = document.getElementById('modalQuantity');
+            var quantityHelp = document.getElementById('quantityHelp');
+
+            modalProductId.value = id;
+            modalProductName.textContent = name;
+            modalQuantity.setAttribute('max', quantity);
+            quantityHelp.textContent = 'Quantidade disponível: ' + quantity;
+        });
     });
 });
+
 </script>
 
 <?php
-$customJS = ['materials/script.js'];
 include '../footer.php';
 ?>

@@ -27,8 +27,14 @@ class Order implements IOrder {
     }
 
     public function getByUserId($user_id) {
-        $stmt = $this->db->prepare("SELECT * FROM orders WHERE user_id = ?");
+        $stmt = $this->db->prepare("SELECT orders.*, materials.name as material_name, materials.price as material_price FROM orders INNER JOIN materials ON orders.product_id = materials.id WHERE orders.user_id = ?");
         $stmt->execute([$user_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getBySellerId($seller_id) {
+        $stmt = $this->db->prepare("SELECT orders.*, materials.name as material_name, materials.price as material_price FROM orders INNER JOIN materials ON orders.product_id = materials.id WHERE orders.seller_id = ?");
+        $stmt->execute([$seller_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

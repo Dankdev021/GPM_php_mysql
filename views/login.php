@@ -9,7 +9,7 @@ include 'header.php';
 <div class="container">
     <div class="login-container">
         <h2 class="text-center">Login</h2>
-        <form action="/oficina/controllers/UserController.php" method="POST"> <!-- Caminho absoluto -->
+        <form action="../controllers/UserController.php" method="POST">
             <input type="hidden" name="action" value="login">
             <div class="form-group">
                 <label for="username">Username</label>
@@ -21,7 +21,7 @@ include 'header.php';
             </div>
             <button type="submit" class="btn btn-primary btn-block">Login</button>
         </form>
-        <p class="text-center mt-3">Don't have an account? <a href="register.php">Register</a></p>
+        <p class="text-center mt-3">Não tem uma conta? <a href="register.php">Registrar</a></p>
     </div>
 </div>
 

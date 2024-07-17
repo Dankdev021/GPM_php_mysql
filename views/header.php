@@ -34,65 +34,34 @@ if (session_status() == PHP_SESSION_NONE) {
                         <li class="nav-item">
                             <a class="nav-link" href="/oficina/views/dashboard.php">Dashboard</a>
                         </li>
+                        <?php if ($_SESSION['user']['role'] === 'vendedor'): ?>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/oficina/views/sales/index.php">Minhas Vendas</a>
+                            </li>
+                        <?php endif; ?>
                     <?php endif; ?>
                     <?php if ($_SESSION['user']['role'] === 'cliente'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="/oficina/views/materials/index.php">Compras</a>
+                            <a class="nav-link" href="/oficina/views/purchases.php">Compras</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/oficina/views/materials/index.php">Catálogo</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/oficina/views/services/index.php">Serviços</a>
                         </li>
                     <?php endif; ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/oficina/public/logout.php">Logout</a>
+                        <a class="nav-link" href="/oficina/controllers/UserController.php?action=logout">Logout</a>
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
                         <a class="nav-link" href="/oficina/views/login.php">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/oficina/views/register.php">Register</a>
+                        <a class="nav-link" href="/oficina/views/register.php">Registrar</a>
                     </li>
                 <?php endif; ?>
             </ul>
         </div>
     </nav>
-
-    <?php if (isset($_SESSION['cliente']) && $_SESSION['cliente']['role'] === 'cliente' && !isset($_SESSION['selected_seller'])): ?>
-        <div class="modal fade" id="selectSellerModal" tabindex="-1" role="dialog" aria-labelledby="selectSellerModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="selectSellerModalLabel">Selecionar Vendedor</h5>
-                    </div>
-                    <form action="/oficina/controllers/SelectSellerController.php" method="POST">
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="seller">Selecione um Vendedor:</label>
-                                <select name="seller_id" id="seller" class="form-control" required>
-                                    <option value="" selected disabled>Selecione um Vendedor</option>
-                                    <?php
-                                    require_once '../config/Config.php';
-                                    $pdo = db_connect();
-                                    $stmt = $pdo->query("SELECT id, username FROM users WHERE role = 'vendedor'");
-                                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)): ?>
-                                        <option value="<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['username']); ?></option>
-                                    <?php endwhile; ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary">Confirmar</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                $('#selectSellerModal').modal({
-                    backdrop: 'static',
-                    keyboard: false
-                });
-                $('#selectSellerModal').modal('show');
-            });
-        </script>
-    <?php endif; ?>

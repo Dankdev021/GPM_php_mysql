@@ -34,5 +34,11 @@ class ServiceOrder {
         $stmt->execute([$mechanic_id]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getServiceByCustomerId($customer_id) {
+        $stmt = $this->db->prepare("SELECT service_orders.*, customers.username as customer_name, mechanics.username as mechanic_name FROM service_orders INNER JOIN users as customers ON service_orders.customer_id = customers.id INNER JOIN users as mechanics ON service_orders.mechanic_id = mechanics.id WHERE service_orders.customer_id = ?");
+        $stmt->execute([$customer_id]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

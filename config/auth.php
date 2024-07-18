@@ -10,7 +10,7 @@ function redirectIfNotLoggedIn() {
 
 function checkAccess($userRole, $allowedRoles) {
     if (!in_array($userRole, $allowedRoles)) {
-        header('Location: ../views/unauthorized.php');
+        header('Location: /oficina/views/unauthorized.php');
         exit();
     }
 }

@@ -6,7 +6,7 @@ $pageTitle = 'Minhas Vendas';
 include '../header.php';
 
 redirectIfNotLoggedIn();
-checkAccess($_SESSION['user']['role'], ['vendedor']);
+checkAccess($_SESSION['user']['role'], ['vendedor', 'admin']);
 
 require_once '../../config/Config.php';
 require_once '../../classes/Order.php';
@@ -14,6 +14,12 @@ require_once '../../classes/Order.php';
 $pdo = db_connect();
 $orderModel = new Order($pdo);
 $sales = $orderModel->getBySellerId($_SESSION['user']['id']);
+
+if ($_SESSION['user']['role'] === 'vendedor') {
+    $sales = $orderModel->getBySellerId($_SESSION['user']['id']);
+} else {
+    $sales = $orderModel->getAll();
+}
 ?>
 
 <div class="container mt-5">

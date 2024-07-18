@@ -3,7 +3,7 @@ session_start();
 require_once '../../config/auth.php';
 
 redirectIfNotLoggedIn();
-checkAccess($_SESSION['user']['role'], ['admin', 'vendedor']);
+checkAccess($_SESSION['user']['role'], ['admin', 'vendedor', 'cliente']);
 
 $pageTitle = 'Ordens de Serviço';
 $customCSS = ['services/style.css'];
@@ -17,6 +17,8 @@ $serviceOrderModel = new ServiceOrder($pdo);
 
 if ($_SESSION['user']['role'] === 'vendedor') {
     $serviceOrders = $serviceOrderModel->getByMechanic($_SESSION['user']['id']);
+} else if ($_SESSION['user']['role'] === 'cliente') {
+    $serviceOrders = $serviceOrderModel->getServiceByCustomerId($_SESSION['user']['id']);
 } else {
     $serviceOrders = $serviceOrderModel->getAll();
 }

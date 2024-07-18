@@ -48,17 +48,17 @@ if (session_status() == PHP_SESSION_NONE) {
                     <?php endif; ?>
                     <?php if ($_SESSION['user']['role'] === 'cliente'): ?>
                         <li class="nav-item">
-                            <a class="nav-link" href="/oficina/views/purchases.php">Compras</a>
+                            <a class="nav-link" href="/oficina/views/purchases.php">Minhas compras</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/oficina/views/materials/index.php">Catálogo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/oficina/views/services/create.php">Serviços</a>
+                            <a class="nav-link" href="/oficina/views/services/create.php">Abrir serviço</a>
                         </li>
-                        <!-- <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" href="/oficina/views/services/index.php">Meus serviços</a>
-                        </li> -->
+                        </li>
                     <?php endif; ?>
                     <li class="nav-item">
                         <a class="nav-link btn btn-danger text-light" href="/oficina/controllers/UserController.php?action=logout">Logout</a>

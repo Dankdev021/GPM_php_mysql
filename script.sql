@@ -50,10 +50,19 @@ CREATE TABLE services (
 
 CREATE TABLE service_orders (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    service_id INT NOT NULL,
-    user_id INT NOT NULL,
-    seller_id INT NOT NULL,
+    customer_id INT NOT NULL,
+    mechanic_id INT NOT NULL,
+    service_type VARCHAR(255) NOT NULL,
+    vehicle_model VARCHAR(255) NOT NULL,
+    vehicle_license_plate VARCHAR(255) NOT NULL,
+    description TEXT,
+    estimated_cost DECIMAL(10, 2),
+    service_id INT,
+    user_id INT,
+    seller_id INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES users(id),
+    FOREIGN KEY (mechanic_id) REFERENCES users(id),
     FOREIGN KEY (service_id) REFERENCES services(id),
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (seller_id) REFERENCES users(id)

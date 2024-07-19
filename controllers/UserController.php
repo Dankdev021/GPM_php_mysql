@@ -49,10 +49,36 @@ switch ($action) {
         }
         break;
 
+    case 'create':
+        $username = $_POST['username'];
+        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+        $role = $_POST['role'];
+
+        $pdo = db_connect();
+        $userModel = new User($pdo);
+        if ($userModel->register($username, $password, $role)) {
+            header('Location: ../views/users/index.php');
+        } else {
+            echo "Erro ao registrar usuário.";
+        }
+        break;
+
     case 'logout':
         session_start();
         session_destroy();
         header('Location: ../views/login.php');
+        break;
+
+    case 'delete':
+        $id = $_POST['id'];
+
+        $pdo = db_connect();
+        $userModel = new User($pdo);
+        if ($userModel->delete($id)) {
+            header('Location: ../views/users/index.php');
+        } else {
+            echo "Erro ao deletar usuário.";
+        }
         break;
 
     case 'hire_service':

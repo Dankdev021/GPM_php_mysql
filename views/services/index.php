@@ -37,7 +37,7 @@ if ($_SESSION['user']['role'] === 'vendedor') {
                 <th>Placa do Veículo</th>
                 <th>Descrição</th>
                 <th>Custo Estimado</th>
-                <th style="padding: 40px;">Status</th>
+                <th>Status</th>
                 <th>Data de Criação</th>
                 <th>Última Atualização</th>
                 <?php if ($_SESSION['user']['role'] !== 'cliente'): ?>
@@ -55,7 +55,22 @@ if ($_SESSION['user']['role'] === 'vendedor') {
                     <td><?php echo htmlspecialchars($serviceOrder['vehicle_model']); ?></td>
                     <td><?php echo htmlspecialchars($serviceOrder['vehicle_license_plate']); ?></td>
                     <td><?php echo htmlspecialchars($serviceOrder['description']); ?></td>
-                    <td>R$ <?php echo number_format($serviceOrder['estimated_cost'], 2, ',', '.'); ?></td>
+                    <!-- <td>R$ <?php echo number_format($serviceOrder['estimated_cost'], 2, ',', '.'); ?></td> -->
+                    <td>
+                        <?php if ($_SESSION['user']['role'] !== 'cliente'): ?>
+                            <form action="../../controllers/ServiceOrderController.php" method="POST">
+                                <input type="hidden" name="action" value="update_cost">
+                                <input type="hidden" name="id" value="<?php echo $serviceOrder['id']; ?>">
+                                <input type="text" <?php echo $serviceOrder['estimated_cost']; ?> name="estimated_cost" class="form-control" id="estimated_cost" placeholder="<?php echo $serviceOrder['estimated_cost']; ?>">
+                                <button type="submit" class="btn btn-primary btn-sm mt-2">Salvar</button>
+                            </form>
+                        <?php else: ?>
+                            <?php echo htmlspecialchars($serviceOrder['estimated_cost']); ?>
+                        <?php endif; ?>
+                    </td>
+
+
+
                     <td>
                         <?php if ($_SESSION['user']['role'] !== 'cliente'): ?>
                             <form action="../../controllers/ServiceOrderController.php" method="POST">
@@ -82,13 +97,36 @@ if ($_SESSION['user']['role'] === 'vendedor') {
                             <button type="submit" class="btn btn-danger btn-sm" style="display: inline-block;">Deletar</button>
                         </form>
                     </td>
-
-
                     <?php endif; ?>
                 </tr>
             <?php endforeach; ?>
         </tbody>
     </table>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var valorInput = document.getElementById('estimated_cost');
+
+    valorInput.addEventListener('input', function(e) {
+        var value = e.target.value;
+
+        value = value.replace(/\D/g, ''); // Remove todos os caracteres que não são números
+
+        if (value.length > 2) {
+            value = value.replace(/^0+/, ''); // Remove zeros à esquerda
+        }
+
+        if (value.length <= 2) {
+            value = ('00' + value).slice(-3);
+        }
+
+        value = value.replace(/(\d+)(\d{2})/, '$1,$2'); // Adiciona a vírgula
+
+        e.target.value = value;
+    });
+});
+</script>
+
 
 <?php include '../footer.php'; ?>

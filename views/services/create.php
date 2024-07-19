@@ -51,8 +51,8 @@ $mechanics = $userModel->getUsersByRole('vendedor');
             <textarea class="form-control" id="description" name="description" rows="5" required></textarea>
         </div>
         <div class="form-group">
-            <label for="estimated_cost">Custo Estimado</label>
-            <input type="number" class="form-control" id="estimated_cost" name="estimated_cost" step="0.01" required>
+            <!-- <label for="estimated_cost">Custo Estimado</label> -->
+            <input type="hidden" class="form-control" id="estimated_cost" name="estimated_cost" value="0" step="0.01" required>
         </div>
         <button type="submit" class="btn btn-primary">Criar Ordem de Serviço</button>
     </form>

@@ -13,17 +13,19 @@ $role = $_SESSION['user']['role'];
 
 require_once '../config/Config.php';
 require_once '../classes/Material.php';
-require_once '../classes/Service.php';
+require_once '../classes/ServiceOrder.php';
 require_once '../classes/User.php';
 require_once '../classes/Order.php';
 
 $pdo = db_connect();
 $materialModel = new Material($pdo);
-$serviceModel = new Service($pdo);
+$serviceModel = new ServiceOrder($pdo);
 $userModel = new User($pdo);
 $orderModel = new Order($pdo);
 
 $totalSalesValue = $orderModel->getTotalSalesValue();
+$totalServices = count($serviceModel->getTotalServices());
+$totalUsers = count($userModel->getAll());
 ?>
 
 <div class="container mt-5">

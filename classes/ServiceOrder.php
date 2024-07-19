@@ -61,5 +61,15 @@ class ServiceOrder {
         $stmt = $this->db->prepare("DELETE FROM service_orders WHERE id = ?");
         return $stmt->execute([$id]);
     }
+
+    public function getTotalServices() {
+        $stmt = $this->db->query("SELECT count(id) FROM service_orders");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function updateEstimatedCost($id, $estimated_cost) {
+        $stmt = $this->db->prepare("UPDATE service_orders SET estimated_cost =?, updated_at = NOW() WHERE id =?");
+        return $stmt->execute([$estimated_cost, $id]);
+    }
 }
 ?>

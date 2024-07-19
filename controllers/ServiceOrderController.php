@@ -39,6 +39,21 @@ try {
                 echo "Erro ao criar ordem de serviço.";
             }
             break;
+        case 'update_cost':
+            session_start();
+            $id = $_POST['id'];
+            $valueEstimated = $_POST['estimated_cost'];
+
+            $value = str_replace(',', '.', $valueEstimated);
+
+            $pdo = db_connect();
+            $serviceOrderModel = new ServiceOrder($pdo);
+            if ($serviceOrderModel->updateEstimatedCost($id, $value) ) {
+                header('Location: ../views/services/index.php');
+            } else {
+                echo "Erro ao criar ordem de serviço.";
+            }
+            break;
         case 'update':
             session_start();
             $id = $_POST['id'];
@@ -61,7 +76,6 @@ try {
                 echo "Erro ao atualizar a ordem de serviço.";
             }
             break;
-
         case 'delete':
             // session_start();
             // checkAccess($_SESSION['user']['role'], ['admin']);

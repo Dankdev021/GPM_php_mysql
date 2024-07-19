@@ -16,7 +16,7 @@ class Order implements IOrder {
     }
 
     public function getAll() {
-        $stmt = $this->db->query("SELECT * FROM orders");
+        $stmt = $this->db->query("SELECT orders.*, materials.name as material_name, materials.price as material_price FROM orders INNER JOIN materials ON orders.product_id = materials.id");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -55,9 +55,14 @@ class Order implements IOrder {
     }
 
     public function getTotalSalesValue() {
-        $stmt = $this->db->query("SELECT SUM(total_price) as total_sales_value FROM orders");
+        $stmt = $this->db->query("SELECT SUM(o.quantity * m.price) AS valor_total_vendas FROM orders o JOIN materials m ON o.product_id = m.id");
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result['total_sales_value'];
+        return $result['valor_total_vendas'];
+    }
+
+    public function getTotalSalesBySeller() {
+        $stmt = $this->db->prepare("SELECT u.username AS vendedor, SUM(o.quantity * m.price) AS valor_total_vendido FROM orders o JOIN users u ON o.seller_id = u.id JOIN materials m ON o.product_id = m.id WHERE u.role = 'vendedor' GROUP BY u.username;");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>

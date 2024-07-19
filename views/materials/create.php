@@ -24,8 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $description = $_POST['description'];
     $quantity = $_POST['quantity'];
     $price = $_POST['price'];
+    $total_price = $quantity * $price; // Calcula o preço total
 
-    if ($materialModel->create($name, $description, $quantity, $price)) {
+    if ($materialModel->create($name, $description, $quantity, $price, $total_price)) {
         header('Location: index.php');
     } else {
         echo "Erro ao adicionar material.";
@@ -49,9 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <input type="number" name="quantity" class="form-control" required>
         </div>
         <div class="form-group">
-            <label for="price">Preço</label>
+            <label for="price">Preço Unitário</label>
             <input type="number" step="0.01" name="price" class="form-control" required>
         </div>
+        <input type="hidden" name="total_price" id="total_price" value="0">
         <button type="submit" class="btn btn-primary btn-block">Adicionar</button>
     </form>
 </div>
@@ -59,6 +61,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var buyButtons = document.querySelectorAll('.btn-primary[data-toggle="modal"]');
+        var form = document.querySelector('form');
+
+        form.addEventListener('submit', function(event) {
+        var quantity = document.querySelector('input[name="quantity"]').value;
+        var price = document.querySelector('input[name="price"]').value;
+        var totalPrice = quantity * price;
+        document.getElementById('total_price').value = totalPrice;
+    });
         
         buyButtons.forEach(function(button) {
             button.addEventListener('click', function() {

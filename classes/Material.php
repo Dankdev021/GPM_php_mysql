@@ -10,9 +10,9 @@ class Material implements IMaterial {
         $this->db = $pdo;
     }
 
-    public function create($name, $description, $quantity, $price) {
-        $stmt = $this->db->prepare("INSERT INTO materials (name, description, quantity, price) VALUES (?, ?, ?, ?)");
-        return $stmt->execute([$name, $description, $quantity, $price]);
+    public function create($name, $description, $quantity, $price, $total_price) {
+        $stmt = $this->db->prepare("INSERT INTO materials (name, description, quantity, price, total_price) VALUES (?, ?, ?, ?, ?)");
+        return $stmt->execute([$name, $description, $quantity, $price, $total_price]);
     }
 
     public function getAll() {
@@ -26,9 +26,9 @@ class Material implements IMaterial {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function update($id, $name, $description, $quantity, $price) {
-        $stmt = $this->db->prepare("UPDATE materials SET name = ?, description = ?, quantity = ?, price = ? WHERE id = ?");
-        return $stmt->execute([$name, $description, $quantity, $price, $id]);
+    public function update($id, $name, $description, $quantity, $price, $total_price) {
+        $stmt = $this->db->prepare("UPDATE materials SET name = ?, description = ?, quantity = ?, price = ?, total_price = ? WHERE id = ?");
+        return $stmt->execute([$name, $description, $quantity, $price, $total_price, $id]);
     }
 
     public function delete($id) {

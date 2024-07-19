@@ -41,16 +41,16 @@ $materials = $materialModel->getAll();
                     <td><?php echo htmlspecialchars($material['name']); ?></td>
                     <td><?php echo htmlspecialchars($material['description']); ?></td>
                     <td><?php echo htmlspecialchars($material['quantity']); ?></td>
-                    <td><?php echo htmlspecialchars($material['price']); ?></td>
+                    <td>R$ <?php echo $material['price']; ?></td>
                     <?php if ($_SESSION['user']['role'] === 'admin'): ?>
-                        <td>
-                            <a href="edit.php?id=<?php echo $material['id']; ?>" class="btn btn-warning btn-sm">Editar</a>
-                            <form action="../../controllers/MaterialController.php" method="POST" style="display:inline-block;">
-                                <input type="hidden" name="action" value="delete">
-                                <input type="hidden" name="id" value="<?php echo $material['id']; ?>">
-                                <button type="submit" class="btn btn-danger btn-sm">Deletar</button>
-                            </form>
-                        </td>
+                <td>
+                    <a href="edit.php?id=<?php echo $material['id']; ?>" class="btn btn-warning btn-sm" style="display: inline-block; margin-right: 5px;">Editar</a>
+                    <form action="../../controllers/MaterialController.php" method="POST" style="display: inline-block; margin: 0;">
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="id" value="<?php echo $material['id']; ?>">
+                        <button type="submit" class="btn btn-danger btn-sm">Deletar</button>
+                    </form>
+                </td>
                     <?php elseif ($_SESSION['user']['role'] === 'cliente'): ?>
                         <td>
                         <?php if ($material['quantity'] > 0): ?>

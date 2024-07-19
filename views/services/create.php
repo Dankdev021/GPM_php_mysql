@@ -79,4 +79,4 @@ $mechanics = $userModel->getUsersByRole('vendedor');
 });
 </script>
 
-<!-- -->
+<?php include '../footer.php'; ?>

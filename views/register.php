@@ -23,7 +23,7 @@ include 'header.php';
                 <label for="role">Role</label>
                 <select name="role" class="form-control" required>
                     <option value="cliente">Cliente</option>
-                    <option value="vendedor">Vendedor</option>
+                    <option value="vendedor">Mecânico</option>
                     <option value="admin">Admin</option>
                 </select>
             </div>

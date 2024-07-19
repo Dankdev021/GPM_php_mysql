@@ -16,16 +16,20 @@ require_once '../classes/Material.php';
 require_once '../classes/ServiceOrder.php';
 require_once '../classes/User.php';
 require_once '../classes/Order.php';
+require_once '../classes/Sale.php';
 
 $pdo = db_connect();
 $materialModel = new Material($pdo);
 $serviceModel = new ServiceOrder($pdo);
 $userModel = new User($pdo);
 $orderModel = new Order($pdo);
+$saleModel = new Sale($pdo);
 
 $totalSalesValue = $orderModel->getTotalSalesValue();
 $totalServices = count($serviceModel->getTotalServices());
 $totalUsers = count($userModel->getAll());
+$totalMaterials = count($materialModel->getAll());
+$totalSales = count($saleModel->getTotalSales());
 ?>
 
 <div class="container mt-5">
@@ -70,7 +74,7 @@ $totalUsers = count($userModel->getAll());
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mt-4">
+            <div class="col-md-4">
                 <div class="card text-center">
                     <div class="card-header">
                         <strong>Gerenciar Vendas</strong> 
@@ -89,9 +93,20 @@ $totalUsers = count($userModel->getAll());
     <?php endif; ?>
 
     <?php if ($role === 'vendedor'): ?>
-        <div class="text-center mt-4">
-            <a href="sales/index.php" class="btn btn-secondary">Minhas Vendas</a>
-        </div>
+        <div class="col-md-6 mt-4">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <strong>Gerenciar Vendas</strong> 
+                    </div>
+                    <div class="card mt-4">
+                    <div class="card-body">
+                        <p>Total de Vendas: <?php echo $totalSales; ?></p>
+                        <p>Valor Total das Vendas: R$ <?php echo number_format($totalSalesValue, 2, ',', '.'); ?></p>
+                        <a href="sales/index.php" class="btn btn-primary">Ver Vendas</a>
+                    </div>
+                </div>
+                </div>
+            </div>
     <?php endif; ?>
 </div>
 

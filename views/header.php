@@ -14,13 +14,7 @@ if (session_status() == PHP_SESSION_NONE) {
     <title><?php echo isset($pageTitle) ? $pageTitle : 'Oficina'; ?></title>
     <link rel="stylesheet" href="/oficina/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/oficina/assets/css/header/style.css">
-    <?php
-    if (isset($customCSS)) {
-        foreach ($customCSS as $css) {
-            echo "<link rel='stylesheet' href='/oficina/assets/css/$css'>";
-        }
-    }
-    ?>
+    <link rel="icon" href="/oficina/assets/images/favicon.png" type="image/png">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
@@ -33,11 +27,17 @@ if (session_status() == PHP_SESSION_NONE) {
                 <?php if (isset($_SESSION['user'])): ?>
                     <?php if ($_SESSION['user']['role'] === 'admin'): ?>
                         <li class="nav-item">
-                            <a class="nav-link btn btn-success text-light" href="/oficina/views/dashboard.php">Dashboard</a>
+                            <a class="nav-link btn" href="/oficina/views/dashboard.php">Dashboard</a>
+                            <li class="nav-item">
+                            <a class="nav-link" href="/oficina/views/sales/index.php">Vendas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/oficina/views/services/index.php">Serviços</a>
+                        </li>
                         </li>
                     <?php elseif ($_SESSION['user']['role'] === 'vendedor'): ?>
                         <li class="nav-item">
-                            <a class="nav-link btn btn-success text-light" href="/oficina/views/dashboard.php">Dashboard</a>
+                            <a class="nav-link" href="/oficina/views/dashboard.php">Dashboard</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/oficina/views/sales/index.php">Minhas Vendas</a>
@@ -65,12 +65,13 @@ if (session_status() == PHP_SESSION_NONE) {
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="/oficina/views/login.php">Login</a>
+                        <a class="nav-link btn btn-primary text-light" href="../../">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/oficina/views/register.php">Registrar</a>
+                        <a class="nav-link btn btn-primary text-light" href="../../">Registrar</a>
                     </li>
                 <?php endif; ?>
             </ul>
         </div>
     </nav>
+    <div class="content">

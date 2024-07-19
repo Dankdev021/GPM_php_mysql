@@ -10,12 +10,12 @@
 .navbar-brand {
     font-size: 1.5rem;
     font-weight: bold;
-    color: white !important; /* Garantindo que a cor do texto seja branca */
+    color: white !important;
 }
 
 .navbar-nav .nav-item .nav-link {
     margin-left: 10px;
-    color: white !important; /* Garantindo que a cor do texto seja branca */
+    color: white !important;
     display: flex;
     align-items: center;
 }
@@ -27,10 +27,29 @@
 }
 
 .navbar-toggler {
-    border-color: rgba(255, 255, 255, 0.1); /* Ajustando a cor do ícone de toggle */
+    border-color: rgba(255, 255, 255, 0.1);
 }
 
 .navbar-toggler-icon {
     background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 0.5%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1;
+}
+
+.footer {
+    background-color: #343a40; /* Cor de fundo igual ao header */
+    color: #ffffff; /* Cor do texto */
+    padding: 1rem 0; /* Padding superior e inferior */
+    text-align: center;
+}
+
 

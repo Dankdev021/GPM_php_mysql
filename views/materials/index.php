@@ -1,13 +1,12 @@
-<!-- views/materials/index.php -->
-
 <?php
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 require_once '../../config/auth.php';
 
-redirectIfNotLoggedIn();
-checkAccess($_SESSION['user']['role'], ['admin', 'vendedor', 'cliente']);
+// Verifica se o usuário está logado
+$isUserLoggedIn = isset($_SESSION['user']);
+$userRole = $isUserLoggedIn ? $_SESSION['user']['role'] : null;
 
 $pageTitle = 'Materiais';
 $customCSS = ['materials/style.css'];
@@ -30,7 +29,7 @@ $materials = $materialModel->getAll();
                 <th>Descrição</th>
                 <th>Quantidade</th>
                 <th>Preço</th>
-                <?php if ($_SESSION['user']['role'] === 'admin' || $_SESSION['user']['role'] === 'cliente'): ?>
+                <?php if ($isUserLoggedIn && ($userRole === 'admin' || $userRole === 'cliente')): ?>
                     <th>Ações</th>
                 <?php endif; ?>
             </tr>
@@ -41,19 +40,19 @@ $materials = $materialModel->getAll();
                     <td><?php echo htmlspecialchars($material['name']); ?></td>
                     <td><?php echo htmlspecialchars($material['description']); ?></td>
                     <td><?php echo htmlspecialchars($material['quantity']); ?></td>
-                    <td>R$ <?php echo $material['price']; ?></td>
-                    <?php if ($_SESSION['user']['role'] === 'admin'): ?>
-                <td>
-                    <a href="edit.php?id=<?php echo $material['id']; ?>" class="btn btn-warning btn-sm" style="display: inline-block; margin-right: 5px;">Editar</a>
-                    <form action="../../controllers/MaterialController.php" method="POST" style="display: inline-block; margin: 0;">
-                        <input type="hidden" name="action" value="delete">
-                        <input type="hidden" name="id" value="<?php echo $material['id']; ?>">
-                        <button type="submit" class="btn btn-danger btn-sm">Deletar</button>
-                    </form>
-                </td>
-                    <?php elseif ($_SESSION['user']['role'] === 'cliente'): ?>
+                    <td>R$ <?php echo number_format($material['price'], 2, ',', '.'); ?></td>
+                    <?php if ($isUserLoggedIn && $userRole === 'admin'): ?>
                         <td>
-                        <?php if ($material['quantity'] > 0): ?>
+                            <a href="edit.php?id=<?php echo $material['id']; ?>" class="btn btn-warning btn-sm" style="display: inline-block; margin-right: 5px;">Editar</a>
+                            <form action="../../controllers/MaterialController.php" method="POST" style="display: inline-block; margin: 0;">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="id" value="<?php echo $material['id']; ?>">
+                                <button type="submit" class="btn btn-danger btn-sm">Deletar</button>
+                            </form>
+                        </td>
+                    <?php elseif ($isUserLoggedIn && $userRole === 'cliente'): ?>
+                        <td>
+                            <?php if ($material['quantity'] > 0): ?>
                                 <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#buyModal" data-id="<?php echo $material['id']; ?>" data-name="<?php echo htmlspecialchars($material['name']); ?>" data-quantity="<?php echo $material['quantity']; ?>">Comprar</button>
                             <?php else: ?>
                                 <span class="text-danger">Sem estoque</span>
@@ -112,29 +111,26 @@ $materials = $materialModel->getAll();
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-    var buyButtons = document.querySelectorAll('.btn-primary[data-toggle="modal"]');
-    
-    buyButtons.forEach(function(button) {
-        button.addEventListener('click', function() {
-            var id = button.getAttribute('data-id');
-            var name = button.getAttribute('data-name');
-            var quantity = button.getAttribute('data-quantity');
+        var buyButtons = document.querySelectorAll('.btn-primary[data-toggle="modal"]');
+        
+        buyButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var id = button.getAttribute('data-id');
+                var name = button.getAttribute('data-name');
+                var quantity = button.getAttribute('data-quantity');
 
-            var modalProductId = document.getElementById('modalProductId');
-            var modalProductName = document.getElementById('modalProductName');
-            var modalQuantity = document.getElementById('modalQuantity');
-            var quantityHelp = document.getElementById('quantityHelp');
+                var modalProductId = document.getElementById('modalProductId');
+                var modalProductName = document.getElementById('modalProductName');
+                var modalQuantity = document.getElementById('modalQuantity');
+                var quantityHelp = document.getElementById('quantityHelp');
 
-            modalProductId.value = id;
-            modalProductName.textContent = name;
-            modalQuantity.setAttribute('max', quantity);
-            quantityHelp.textContent = 'Quantidade disponível: ' + quantity;
+                modalProductId.value = id;
+                modalProductName.textContent = name;
+                modalQuantity.setAttribute('max', quantity);
+                quantityHelp.textContent = 'Quantidade disponível: ' + quantity;
+            });
         });
     });
-});
-
 </script>
 
-<?php
-include '../footer.php';
-?>
+<?php include '../footer.php'; ?>

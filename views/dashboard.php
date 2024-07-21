@@ -94,17 +94,17 @@ $totalSales = count($saleModel->getTotalSales());
 
     <?php if ($role === 'vendedor'): ?>
         <div class="col-md-6 mt-4">
-                <div class="card text-center">
-                    <div class="card-header">
-                        <strong>Gerenciar Vendas</strong> 
-                    </div>
-                    <div class="card mt-4">
-                    <div class="card-body">
-                        <p>Total de Vendas: <?php echo $totalSales; ?></p>
-                        <p>Valor Total das Vendas: R$ <?php echo number_format($totalSalesValue, 2, ',', '.'); ?></p>
-                        <a href="sales/index.php" class="btn btn-primary">Ver Vendas</a>
-                    </div>
+            <div class="card text-center">
+                <div class="card-header">
+                    <strong>Total de Vendas</strong>
                 </div>
+                <div class="card-body">
+                    <p><?php echo $totalSales; ?></p>
+                    <p>R$ <?php echo number_format($totalSalesValue, 2, ',', '.'); ?></p>
+                    <a href="sales/index.php" class="btn btn-primary">Ver Vendas</a>
+                    <a href="../../controllers/download_sales.php" class="btn btn-success mt-2">Download das Vendas</a>
+                </div>
+            </div>
                 </div>
             </div>
     <?php endif; ?>

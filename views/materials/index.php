@@ -22,6 +22,11 @@ $materials = $materialModel->getAll();
 
 <div class="container mt-5">
     <h2 class="text-center">Materiais Disponíveis</h2>
+    <?php if ($isUserLoggedIn && $userRole === 'admin'): ?>
+        <div class="text-left mb-3" style="max-width: 200px;">
+            <a href="../../scripts/download_materials.php" class="btn btn-success btn-sm">Download dos Materiais</a>
+        </div>
+    <?php endif; ?>
     <table class="table table-striped">
         <thead>
             <tr>

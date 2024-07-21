@@ -24,6 +24,11 @@ if ($_SESSION['user']['role'] === 'vendedor') {
 
 <div class="container mt-5">
     <h2 class="text-center">Minhas Vendas</h2>
+    <?php if ($_SESSION['user']['role'] === 'admin'): ?>
+        <div class="text-right mb-3" style="width: 160px;">
+            <a href="../../scripts/download_sales.php" class="btn btn-success">Baixar relatório</a>
+        </div>
+    <?php endif; ?>
     <table class="table table-striped">
         <thead>
             <tr>

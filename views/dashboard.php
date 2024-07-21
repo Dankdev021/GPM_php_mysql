@@ -93,20 +93,35 @@ $totalSales = count($saleModel->getTotalSales());
     <?php endif; ?>
 
     <?php if ($role === 'vendedor'): ?>
-        <div class="col-md-6 mt-4">
-            <div class="card text-center">
-                <div class="card-header">
-                    <strong>Total de Vendas</strong>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            <strong>Gerenciar Vendas</strong> 
+                        </div>
+                        <div class="card-body">
+                            <p>Total de Vendas: <?php echo $totalSales; ?></p>
+                            <p>Valor Total das Vendas: R$ <?php echo number_format($totalSalesValue, 2, ',', '.'); ?></p>
+                            <a href="sales/index.php" class="btn btn-primary">Ver Vendas</a>
+                        </div>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <p><?php echo $totalSales; ?></p>
-                    <p>R$ <?php echo number_format($totalSalesValue, 2, ',', '.'); ?></p>
-                    <a href="sales/index.php" class="btn btn-primary">Ver Vendas</a>
-                    <a href="../../controllers/download_sales.php" class="btn btn-success mt-2">Download das Vendas</a>
+                <div class="col-md-6">
+                    <div class="card text-center">
+                        <div class="card-header">
+                            <strong>Serviços</strong>
+                        </div>
+                        <div class="card-body">
+                            <p>Total de Serviços: <?php echo $totalServices; ?></p>
+                            <a href="services/index.php" class="btn btn-primary mb-2">Ver Serviços</a>
+                            <a href="services/create.php" class="btn btn-success">Adicionar Serviço</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-                </div>
-            </div>
+        </div>
+
     <?php endif; ?>
 </div>
 

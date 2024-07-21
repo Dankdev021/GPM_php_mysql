@@ -61,6 +61,14 @@ if (session_status() == PHP_SESSION_NONE) {
         #loginModal, #registerModal {
             color: #000;
         }
+
+        #acesso {
+            padding: 25px;
+            background-color: #708090;
+            border-radius: 20px;
+            box-shadow: 5px 5px 5px black;
+        }
+
     </style>
     <link rel="icon" href="/oficina/assets/images/favicon.png" type="image/png">
 </head>
@@ -68,7 +76,10 @@ if (session_status() == PHP_SESSION_NONE) {
     <div class="background"></div>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Oficina</a>
+        <a class="navbar-brand" href="/oficina/index.php">
+            <img src="/oficina/assets/images/favicon.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            Oficina
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -91,7 +102,7 @@ if (session_status() == PHP_SESSION_NONE) {
     </nav>
 
     <div class="content">
-        <div>
+        <div id="acesso">
             <h1>Bem-vindo à nossa Oficina Mecânica</h1>
             <p>Oferecemos uma ampla gama de serviços de alta qualidade para manter seu veículo em perfeito estado.</p>
             <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#registerModal">Registre-se Agora</a>

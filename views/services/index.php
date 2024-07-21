@@ -26,6 +26,11 @@ if ($_SESSION['user']['role'] === 'vendedor') {
 
 <div class="container container-wide mt-5" style="max-width: 80%;">
     <h2 class="text-center">Ordens de Serviço</h2>
+    <?php if ($_SESSION['user']['role'] === 'admin'): ?>
+        <div class="text-left mb-3" style="max-width: 300px;">
+            <a href="../../scripts/download_service_orders.php" class="btn btn-success btn-sm">Baixar das Ordens de Serviço</a>
+        </div>
+    <?php endif; ?>
     <table class="table table-striped mt-4">
         <thead>
             <tr>
@@ -55,7 +60,6 @@ if ($_SESSION['user']['role'] === 'vendedor') {
                     <td><?php echo htmlspecialchars($serviceOrder['vehicle_model']); ?></td>
                     <td><?php echo htmlspecialchars($serviceOrder['vehicle_license_plate']); ?></td>
                     <td><?php echo htmlspecialchars($serviceOrder['description']); ?></td>
-                    <!-- <td>R$ <?php echo number_format($serviceOrder['estimated_cost'], 2, ',', '.'); ?></td> -->
                     <td>
                         <?php if ($_SESSION['user']['role'] !== 'cliente'): ?>
                             <form action="../../controllers/ServiceOrderController.php" method="POST">
@@ -68,9 +72,6 @@ if ($_SESSION['user']['role'] === 'vendedor') {
                             <?php echo htmlspecialchars($serviceOrder['estimated_cost']); ?>
                         <?php endif; ?>
                     </td>
-
-
-
                     <td>
                         <?php if ($_SESSION['user']['role'] !== 'cliente'): ?>
                             <form action="../../controllers/ServiceOrderController.php" method="POST">
@@ -90,13 +91,13 @@ if ($_SESSION['user']['role'] === 'vendedor') {
                     <td><?php echo htmlspecialchars($serviceOrder['updated_at']); ?></td>
                     <?php if ($_SESSION['user']['role'] !== 'cliente'): ?>
                         <td style="display: flex;">
-                        <a href="edit.php?id=<?php echo htmlspecialchars($serviceOrder['id']); ?>" class="btn btn-warning btn-sm" style="display: inline-block; margin-right: 5px;">Editar</a>
-                        <form action="../../controllers/ServiceOrderController.php" method="POST" style="display: inline-block; margin: 0; padding: 0;">
-                            <input type="hidden" name="action" value="delete">
-                            <input type="hidden" name="id" value="<?php echo $serviceOrder['id']; ?>">
-                            <button type="submit" class="btn btn-danger btn-sm" style="display: inline-block;">Deletar</button>
-                        </form>
-                    </td>
+                            <a href="edit.php?id=<?php echo htmlspecialchars($serviceOrder['id']); ?>" class="btn btn-warning btn-sm" style="display: inline-block; margin-right: 5px;">Editar</a>
+                            <form action="../../controllers/ServiceOrderController.php" method="POST" style="display: inline-block; margin: 0; padding: 0;">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="id" value="<?php echo $serviceOrder['id']; ?>">
+                                <button type="submit" class="btn btn-danger btn-sm" style="display: inline-block;">Deletar</button>
+                            </form>
+                        </td>
                     <?php endif; ?>
                 </tr>
             <?php endforeach; ?>
@@ -127,6 +128,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
-
 
 <?php include '../footer.php'; ?>

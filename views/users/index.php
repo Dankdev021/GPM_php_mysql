@@ -21,6 +21,9 @@ $users = $userModel->getAll();
 
 <div class="container mt-5">
     <h2 class="text-center">Gerenciar Usuários</h2>
+    <div class="text-left mb-3">
+        <a href="../../scripts/download_users.php" class="btn btn-success btn-sm" style="max-width: 200px;">Download dos Usuários</a>
+    </div>
     <table class="table table-striped mt-4">
         <thead>
             <tr>

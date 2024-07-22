@@ -1,4 +1,8 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -15,9 +19,11 @@ include '../header.php';
 require_once '../../config/Config.php';
 require_once '../../classes/Material.php';
 
+
 $pdo = db_connect();
 $materialModel = new Material($pdo);
 $materials = $materialModel->getAll();
+
 ?>
 
 <div class="container mt-5">

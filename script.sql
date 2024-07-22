@@ -9,7 +9,7 @@ CREATE TABLE `users` (
   `role` enum('cliente','vendedor','admin') NOT NULL DEFAULT 'cliente',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4;
 
 -- oficina.materials definition
 
@@ -22,7 +22,7 @@ CREATE TABLE `materials` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `total_price` decimal(10,2) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 -- oficina.orders definition
 
@@ -40,7 +40,7 @@ CREATE TABLE `orders` (
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`seller_id`) REFERENCES `users` (`id`),
   CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`product_id`) REFERENCES `materials` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
 
 
 -- oficina.services definition
@@ -52,7 +52,7 @@ CREATE TABLE `services` (
   `price` decimal(10,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 -- oficina.service_orders definition
@@ -83,4 +83,4 @@ CREATE TABLE `service_orders` (
   CONSTRAINT `service_orders_ibfk_3` FOREIGN KEY (`service_id`) REFERENCES `services` (`id`),
   CONSTRAINT `service_orders_ibfk_4` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `service_orders_ibfk_5` FOREIGN KEY (`seller_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;

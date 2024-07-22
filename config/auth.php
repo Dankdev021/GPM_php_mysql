@@ -3,7 +3,7 @@
 <?php
 function redirectIfNotLoggedIn() {
     if (!isset($_SESSION['user'])) {
-        header('Location: ../views/login.php');
+        header('Location: /oficina/views/login.php');
         exit();
     }
 }

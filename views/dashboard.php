@@ -29,7 +29,7 @@ $totalSalesValue = $orderModel->getTotalSalesValue();
 $totalServices = count($serviceModel->getTotalServices());
 $totalUsers = count($userModel->getAll());
 $totalMaterials = count($materialModel->getAll());
-$totalSales = count($saleModel->getTotalSales());
+$totalSales = $saleModel->getTotalSalesById($_SESSION['user']['id']);
 ?>
 
 <div class="container mt-5"> 
@@ -57,7 +57,7 @@ $totalSales = count($saleModel->getTotalSales());
                     </div>
                     <div class="card-body">
                         <p>Total de Serviços: <?php echo $totalServices; ?></p>
-                        <a href="services/index.php" class="btn btn-primary mb-2">Ver Serviços</a>
+                        <a href="../views/services/index.php" class="btn btn-primary mb-2">Ver Serviços</a>
                         <a href="services/create.php" class="btn btn-success">Adicionar Serviço</a>
                     </div>
                 </div>
@@ -81,7 +81,7 @@ $totalSales = count($saleModel->getTotalSales());
                     </div>
                     <div class="card mt-4">
                     <div class="card-body">
-                        <p>Total de Vendas: <?php echo $totalSales; ?></p>
+                        <p>Total de Vendas: <?php echo $totalSales[0]['vendas']; ?></p>
                         <p>Valor Total das Vendas: R$ <?php echo number_format($totalSalesValue, 2, ',', '.'); ?></p>
                         <a href="sales/index.php" class="btn btn-primary">Ver Vendas</a>
                     </div>
@@ -101,7 +101,7 @@ $totalSales = count($saleModel->getTotalSales());
                             <strong>Gerenciar Vendas</strong> 
                         </div>
                         <div class="card-body">
-                            <p>Total de Vendas: <?php echo $totalSales; ?></p>
+                            <p>Total de Vendas: <?php echo $totalSales[0]['vendas']; ?></p>
                             <p>Valor Total das Vendas: R$ <?php echo number_format($totalSalesValue, 2, ',', '.'); ?></p>
                             <a href="sales/index.php" class="btn btn-primary">Ver Vendas</a>
                         </div>
@@ -114,8 +114,8 @@ $totalSales = count($saleModel->getTotalSales());
                         </div>
                         <div class="card-body">
                             <p>Total de Serviços: <?php echo $totalServices; ?></p>
-                            <a href="services/index.php" class="btn btn-primary mb-2">Ver Serviços</a>
-                            <a href="services/create.php" class="btn btn-success">Adicionar Serviço</a>
+                            <a href="/oficina/views/services/index.php" class="btn btn-primary mb-2">Ver Serviços</a>
+                            <a href="/oficina/views/services/create.php" class="btn btn-success">Adicionar Serviço</a>
                         </div>
                     </div>
                 </div>
@@ -124,5 +124,4 @@ $totalSales = count($saleModel->getTotalSales());
 
     <?php endif; ?>
 </div>
-
 <?php include 'footer.php'; ?>

@@ -1,9 +1,8 @@
 <?php
 // classes/ServiceOrder.php
 
-require_once "interface/IServiceOrder.php";
 
-class ServiceOrder implements IServiceOrder {
+class ServiceOrder {
     private $db;
 
     public function __construct($pdo) {
@@ -11,8 +10,14 @@ class ServiceOrder implements IServiceOrder {
     }
 
     public function create($customer_id, $mechanic_id, $service_type, $vehicle_model, $vehicle_license_plate, $description, $estimated_cost) {
-        $stmt = $this->db->prepare("INSERT INTO service_orders (customer_id, mechanic_id, service_type, vehicle_model, vehicle_license_plate, description, estimated_cost) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        return $stmt->execute([$customer_id, $mechanic_id, $service_type, $vehicle_model, $vehicle_license_plate, $description, $estimated_cost]);
+        try {
+            $stmt = $this->db->prepare("INSERT INTO service_orders (customer_id, mechanic_id, service_type, vehicle_model, vehicle_license_plate, description, estimated_cost) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            return $stmt->execute([$customer_id, $mechanic_id, $service_type, $vehicle_model, $vehicle_license_plate, $description, $estimated_cost]);
+        } catch (\Throwable $th) {
+            echo "Error: ". $th->getMessage();
+            return false;
+        }
+
     }
 
         public function createOrder($service_id, $user_id, $seller_id) {

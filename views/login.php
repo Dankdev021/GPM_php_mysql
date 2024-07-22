@@ -6,8 +6,8 @@ $customCSS = ['login/style.css'];
 include 'header.php';
 ?>
 
-<div class="container">
-    <div class="login-container">
+<div class="container" style="display: flex; justify-content: center; align-items: center; height: 100vh; ">
+    <div class="login-container" style="background-color: #ffffff; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 400px; width: 100%;">
         <h2 class="text-center">Login</h2>
         <form action="../controllers/UserController.php" method="POST">
             <input type="hidden" name="action" value="login">
@@ -24,8 +24,10 @@ include 'header.php';
         <p class="text-center mt-3">Não tem uma conta? <a href="register.php">Registrar</a></p>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="/oficina/assets/js/bootstrap.min.js"></script>
+
 
 <?php
 $customJS = ['login/script.js'];
-include 'footer.php';
 ?>

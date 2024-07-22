@@ -1,6 +1,10 @@
 <?php
 // controllers/UserController.php
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 require_once '../config/Config.php';
 require_once '../classes/User.php';
 require_once '../classes/ServiceOrder.php';
@@ -8,6 +12,7 @@ require_once '../classes/ServiceOrder.php';
 $action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : '');
 
 switch ($action) {
+    
     case 'login':
         session_start();
         $username = $_POST['username'];
@@ -43,7 +48,7 @@ switch ($action) {
         $pdo = db_connect();
         $userModel = new User($pdo);
         if ($userModel->register($username, $password, $role)) {
-            header('Location: ../views/login.php');
+            header('Location: /oficina/views/users/index.php');
         } else {
             echo "Erro ao registrar usuário.";
         }
@@ -57,7 +62,7 @@ switch ($action) {
         $pdo = db_connect();
         $userModel = new User($pdo);
         if ($userModel->register($username, $password, $role)) {
-            header('Location: ../views/users/index.php');
+            header('Location: /oficina/views/users/index.php');
         } else {
             echo "Erro ao registrar usuário.";
         }

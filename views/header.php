@@ -68,10 +68,10 @@ if (session_status() == PHP_SESSION_NONE) {
                     </li>
                 <?php else: ?>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-light" href="../../">Login</a>
+                        <a class="nav-link btn btn-primary text-light" href="../index.php">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn btn-primary text-light" href="../../">Registrar</a>
+                        <a class="nav-link btn btn-primary text-light" href="../">Registrar</a>
                     </li>
                 <?php endif; ?>
             </ul>

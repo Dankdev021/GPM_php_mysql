@@ -60,6 +60,12 @@ class Order implements IOrder {
         return $result['valor_total_vendas'];
     }
 
+    public function getTotalSalesByUser($user) {
+        $stmt = $this->db->prepare("SELECT u.username AS comprador, SUM(o.quantity * m.price) AS valor_total_comprado FROM orders o JOIN users u ON o.user_id = u.id JOIN materials m ON o.product_id = m.id WHERE u.id =?");
+        $stmt->execute([$user]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function getTotalSalesBySeller() {
         $stmt = $this->db->prepare("SELECT u.username AS vendedor, SUM(o.quantity * m.price) AS valor_total_vendido FROM orders o JOIN users u ON o.seller_id = u.id JOIN materials m ON o.product_id = m.id WHERE u.role = 'vendedor' GROUP BY u.username;");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

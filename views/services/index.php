@@ -2,6 +2,11 @@
 session_start();
 require_once '../../config/auth.php';
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 redirectIfNotLoggedIn();
 checkAccess($_SESSION['user']['role'], ['admin', 'vendedor', 'cliente']);
 

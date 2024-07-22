@@ -24,7 +24,12 @@ class Sale implements ISale {
     }
 
     public function getTotalSales() {
-        $stmt = $this->db->query("SELECT count(id) FROM orders");
+        $stmt = $this->db->query("SELECT count(id) as vendas FROM orders");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getTotalSalesById($id) {
+        $stmt = $this->db->query("SELECT count(id) as vendas FROM orders WHERE seller_id = $id");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

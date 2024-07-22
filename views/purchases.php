@@ -17,6 +17,8 @@ require_once '../classes/Order.php';
 $pdo = db_connect();
 $orderModel = new Order($pdo);
 $purchases = $orderModel->getByUserId($_SESSION['user']['id']);
+
+$valueTotal = $orderModel->getTotalSalesByUser($_SESSION['user']['id']);
 ?>
 
 <div class="container mt-5">
@@ -35,7 +37,7 @@ $purchases = $orderModel->getByUserId($_SESSION['user']['id']);
                 <tr>
                     <td><?php echo htmlspecialchars($purchase['material_name']); ?></td>
                     <td><?php echo htmlspecialchars($purchase['quantity']); ?></td>
-                    <td><?php echo htmlspecialchars($purchase['material_price']); ?></td>
+                    <td><?php echo htmlspecialchars($valueTotal['valor_total_comprado']); ?></td>
                     <td><?php echo htmlspecialchars($purchase['created_at']); ?></td>
                 </tr>
             <?php endforeach; ?>

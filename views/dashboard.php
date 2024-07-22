@@ -32,7 +32,7 @@ $totalMaterials = count($materialModel->getAll());
 $totalSales = count($saleModel->getTotalSales());
 ?>
 
-<div class="container mt-5">
+<div class="container mt-5"> 
     <?php if ($role === 'admin'): ?>
         <div class="container mt-5">
         <h2 class="text-center">Dashboard do Administrador</h2>

@@ -1,7 +1,9 @@
 <?php
 // classes/ServiceOrder.php
 
-class ServiceOrder {
+require_once "interface/IServiceOrder.php";
+
+class ServiceOrder implements IServiceOrder {
     private $db;
 
     public function __construct($pdo) {

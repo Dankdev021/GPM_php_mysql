@@ -1,7 +1,9 @@
 <?php
 // classes/Service.php
 
-class Service {
+require_once "interfaces/IService.php";
+
+class Service implements IService{
     private $db;
 
     public function __construct($pdo) {

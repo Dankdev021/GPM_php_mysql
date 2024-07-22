@@ -1,0 +1,173 @@
+Sistema de Gerenciamento de Oficina Mecânica
+
+
+Índice
+
+    Introdução
+    Funcionalidades
+    Requisitos do Sistema
+    Tecnologias Utilizadas
+    Estrutura do Projeto
+    Configuração e Instalação
+    Banco de Dados
+    Autenticação e Controle de Acesso
+    Principais Funcionalidades
+        Gerenciamento de Materiais
+        Gerenciamento de Serviços
+        Gerenciamento de Vendas
+        Gerenciamento de Usuários
+    Relatórios e Download de Dados
+    Interface do Usuário
+    Considerações Finais
+
+
+
+Introdução
+Este projeto é um sistema de gerenciamento para oficinas mecânicas. Ele permite o controle de materiais, vendas e serviços, além de oferecer funcionalidades de gerenciamento de usuários com diferentes níveis de acesso.
+
+Funcionalidades
+Cadastro e gerenciamento de materiais.
+Cadastro e gerenciamento de serviços.
+Registro e acompanhamento de vendas.
+Sistema de autenticação e controle de acesso por nível de usuário (cliente, vendedor e administrador).
+Relatórios e download de dados.
+Interface moderna e responsiva.
+
+Requisitos do Sistema
+Servidor web (Apache, Nginx, etc.)
+PHP 7.4 ou superior
+MySQL 5.7 ou superior
+
+
+Tecnologias Utilizadas
+HTML, CSS e JavaScript para a interface do usuário.
+Bootstrap para estilização responsiva.
+PHP para a lógica de negócios no backend.
+MySQL para armazenamento de dados.
+JQuery para manipulação do DOM e interações AJAX.
+
+
+Estrutura do Projeto
+oficina/
+├── assets/
+│   ├── css/
+│   ├── js/
+│   ├── images/
+├── classes/
+│   ├── Material.php
+│   ├── Order.php
+│   ├── Sale.php
+│   ├── Service.php
+│   ├── ServiceOrder.php
+│   ├── User.php
+├── config/
+│   ├── auth.php
+│   ├── Config.php
+├── controllers/
+│   ├── MaterialController.php
+│   ├── OrderController.php
+│   ├── SalectController.php
+│   ├── SelectSellerController.php
+│   ├── ServiceOrderController.php
+│   ├── UserController.php
+├── interfaces/
+│   ├── IMaterial.php
+│   ├── IOrder.php
+│   ├── ISale.php
+│   ├── IService.php
+│   ├── IServiceOrder.php
+│   ├── IUser.php
+├── public/
+│   ├── logout.php
+├── scripts/
+│   ├── download_materials.php
+│   ├── download_sales.php
+│   ├── download_service_orders.php
+│   ├── download_users.php
+├── views/
+│   ├── header.php
+│   ├── compras.php
+│   ├── purchases.php
+│   ├── unauthorized.php
+│   ├── footer.php
+│   ├── home.php
+│   ├── login.php
+│   ├── register.php
+│   ├── dashboard.php
+│   ├── materials/
+│   │   ├── create.php
+│   │   ├── index.php
+│   │   ├── edit.php
+│   ├── services/
+│   │   ├── create.php
+│   │   ├── index.php
+│   │   ├── edit.php
+│   ├── sales/
+│   │   ├── index.php
+│   │   ├── edit.php
+│   │   ├── create.php
+│   ├── users/
+│   │   ├── create.php
+│   │   ├── index.php
+│   │   ├── edit.php
+├── index.php
+├── scripts.sql
+└── .README.md
+
+Configuração e Instalação
+
+git clone https://github.com/seu-usuario/oficina.git
+
+
+Configure o banco de dados:
+Crie um banco de dados no MySQL.
+Importe o arquivo SQL para criar as tabelas necessárias.
+
+Banco de Dados
+Estrutura das Tabelas
+
+
+Dados completos com scripts para a geração das tabelas estão em:
+
+/oficina/scripts.sql
+
+
+Autenticação e Controle de Acesso
+O sistema possui três tipos de usuários:
+Cliente: Pode visualizar e comprar materiais, e visualizar serviços.
+Vendedor: Pode visualizar e gerenciar suas vendas e serviços.
+Admin: Pode gerenciar todos os materiais, vendas, serviços e usuários.
+
+
+Principais Funcionalidades
+Gerenciamento de Materiais
+Criar Material: Formulário para adicionar novos materiais ao estoque.
+Editar Material: Formulário para editar informações de materiais existentes.
+Excluir Material: Função para deletar materiais do estoque.
+Listar Materiais: Tela de listagem de todos os materiais disponíveis.
+Gerenciamento de Serviços
+Criar Serviço: Formulário para adicionar novos serviços.
+Editar Serviço: Formulário para editar informações de serviços existentes.
+Excluir Serviço: Função para deletar serviços.
+Listar Serviços: Tela de listagem de todas as ordens de serviço.
+Gerenciamento de Vendas
+Registrar Venda: Função para registrar uma nova venda de material.
+Listar Vendas: Tela de listagem de todas as vendas realizadas.
+Gerenciamento de Usuários
+Criar Usuário: Formulário para adicionar novos usuários.
+Editar Usuário: Formulário para editar informações de usuários existentes.
+Excluir Usuário: Função para deletar usuários.
+Listar Usuários: Tela de listagem de todos os usuários cadastrados.
+Relatórios e Download de Dados
+Download de Vendas: Botão para baixar um relatório em CSV de todas as vendas realizadas.
+Download de Serviços: Botão para baixar um relatório em CSV de todas as ordens de serviço.
+Interface do Usuário
+A interface do usuário foi projetada para ser intuitiva e responsiva, utilizando o Bootstrap para garantir compatibilidade com diferentes dispositivos.
+Header e Footer
+O header contém a navegação principal do sistema, enquanto o footer contém informações adicionais.
+Home Page
+A página inicial apresenta uma visão geral da oficina com uma imagem de fundo e opções de login e registro como modais.
+Modais
+Os formulários de login e registro são exibidos em modais para melhorar a experiência do usuário.
+Considerações Finais
+Este sistema foi desenvolvido para atender às necessidades de gerenciamento de oficinas mecânicas, proporcionando uma ferramenta eficiente e intuitiva para o controle de materiais, serviços e vendas, além de oferecer um sistema robusto de autenticação e controle de acesso.

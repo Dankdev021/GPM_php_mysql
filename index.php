@@ -12,7 +12,6 @@ if (session_status() == PHP_SESSION_NONE) {
     <title>Oficina Mecânica</title>
     <link rel="stylesheet" href="/oficina/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/oficina/assets/css/header/style.css">
-    <link rel="stylesheet" href="/oficina/assets/css/footer/style.css">
     <style>
         body, html {
             height: 100%;
@@ -120,7 +119,7 @@ if (session_status() == PHP_SESSION_NONE) {
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/oficina/controllers/UserController.php?action=login" method="POST">
+                    <form action="/oficina/controllers/UserController.php" method="POST">
                         <div class="form-group">
                             <label for="loginUsername">Username</label>
                             <input type="text" name="username" class="form-control" id="loginUsername" required>
@@ -129,6 +128,7 @@ if (session_status() == PHP_SESSION_NONE) {
                             <label for="loginPassword">Password</label>
                             <input type="password" name="password" class="form-control" id="loginPassword" required>
                         </div>
+                        <input type="hidden" name="action" value="login">
                         <button type="submit" class="btn btn-primary btn-block">Login</button>
                     </form>
                 </div>
@@ -146,7 +146,7 @@ if (session_status() == PHP_SESSION_NONE) {
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="/oficina/controllers/UserController.php?action=register" method="POST">
+                    <form action="/oficina/controllers/UserController.php" method="POST">
                         <div class="form-group">
                             <label for="username">Username</label>
                             <input type="text" name="username" class="form-control" required>
@@ -163,6 +163,7 @@ if (session_status() == PHP_SESSION_NONE) {
                                 <option value="admin">Admin</option>
                             </select>
                         </div>
+                        <input type="hidden" name="action" value="create">
                         <button type="submit" class="btn btn-primary btn-block">Registrar</button>
                     </form>
                     <p class="text-center mt-3">Possui uma conta? <a href="" data-dismiss="modal" data-toggle="modal" data-target="#loginModal">Login</a></p>

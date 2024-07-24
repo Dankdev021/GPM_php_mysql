@@ -38,8 +38,20 @@ class User implements IUser {
     }
 
     public function delete($id) {
+        $this->deleteServiceOrder($id);
+        $this->deleteOrder($id);
         $stmt = $this->db->prepare("DELETE FROM users WHERE id = ?");
         return $stmt->execute([$id]);
+    }
+
+    public function deleteServiceOrder($id) {
+        $delete = $this->db->prepare("DELETE FROM service_orders WHERE mechanic_id = ?");
+        return $delete->execute([$id]);
+    }
+
+    public function deleteOrder($id) {
+        $delete = $this->db->prepare("DELETE FROM orders WHERE user_id = ?");
+        return $delete->execute([$id]);
     }
 
     public function login($username, $password) {

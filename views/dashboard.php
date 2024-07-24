@@ -26,7 +26,7 @@ $orderModel = new Order($pdo);
 $saleModel = new Sale($pdo);
 
 $totalSalesValue = $orderModel->getTotalSalesValue();
-$totalServices = count($serviceModel->getTotalServices());
+$totalServices = $serviceModel->getTotalServices();
 $totalUsers = count($userModel->getAll());
 $totalMaterials = count($materialModel->getAll());
 $totalSales = $saleModel->getTotalSalesById($_SESSION['user']['id']);
@@ -56,7 +56,7 @@ $totalSales = $saleModel->getTotalSalesById($_SESSION['user']['id']);
                         <strong> Serviços </strong>
                     </div>
                     <div class="card-body">
-                        <p>Total de Serviços: <?php echo $totalServices; ?></p>
+                        <p>Total de Serviços: <?php echo $totalServices[0]['total']; ?></p>
                         <a href="../views/services/index.php" class="btn btn-primary mb-2">Ver Serviços</a>
                         <a href="services/create.php" class="btn btn-success">Adicionar Serviço</a>
                     </div>
@@ -113,7 +113,7 @@ $totalSales = $saleModel->getTotalSalesById($_SESSION['user']['id']);
                             <strong>Serviços</strong>
                         </div>
                         <div class="card-body">
-                            <p>Total de Serviços: <?php echo $totalServices; ?></p>
+                            <p>Total de Serviços: <?php echo $totalServices[0]['total']; ?></p>
                             <a href="/oficina/views/services/index.php" class="btn btn-primary mb-2">Ver Serviços</a>
                             <a href="/oficina/views/services/create.php" class="btn btn-success">Adicionar Serviço</a>
                         </div>

@@ -90,4 +90,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     });
 </script>
 
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var valorInput = document.getElementById('estimated_cost');
+
+    valorInput.addEventListener('input', function(e) {
+        var value = e.target.value;
+
+        value = value.replace(/\D/g, ''); // Remove todos os caracteres que não são números
+
+        if (value.length > 2) {
+            value = value.replace(/^0+/, ''); // Remove zeros à esquerda
+        }
+
+        if (value.length <= 2) {
+            value = ('00' + value).slice(-3);
+        }
+
+        value = value.replace(/(\d+)(\d{2})/, '$1,$2'); // Adiciona a vírgula
+
+        e.target.value = value;
+    });
+});
+</script>
+
 <?php include '../footer.php'; ?>

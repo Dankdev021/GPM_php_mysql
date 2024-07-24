@@ -36,7 +36,7 @@ switch ($action) {
                 header('Location: ../views/materials/index.php');
             }
         } else {
-            echo "Login falhou. Verifique suas credenciais.";
+            header('Location: /oficina/public/erroCredencial.php');
         }
         break;
 

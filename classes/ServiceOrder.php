@@ -70,7 +70,7 @@ class ServiceOrder {
     }
 
     public function getTotalServices() {
-        $stmt = $this->db->query("SELECT count(id) FROM service_orders");
+        $stmt = $this->db->query("SELECT count(id) as total FROM service_orders");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

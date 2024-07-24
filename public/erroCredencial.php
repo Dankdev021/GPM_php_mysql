@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credenciais Erradas</title>
+</head>
+<body>
+
 <!-- views/header.php -->
 
 <?php
@@ -18,8 +27,7 @@ if (session_status() == PHP_SESSION_NONE) {
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
-        
-        <a class="navbar-brand" href="/oficina/views/materials/index.php">
+        <a class="navbar-brand" href="/oficina/index.php">
             <img src="/oficina/assets/images/favicon.png" width="30" height="30" class="d-inline-block align-top" alt="">
             Oficina
         </a>
@@ -32,12 +40,12 @@ if (session_status() == PHP_SESSION_NONE) {
                     <?php if ($_SESSION['user']['role'] === 'admin'): ?>
                         <li class="nav-item">
                             <a class="nav-link btn" href="/oficina/views/dashboard.php">Dashboard</a>
-                            <li class="nav-item">
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="/oficina/views/sales/index.php">Vendas</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/oficina/views/services/index.php">Serviços</a>
-                        </li>
                         </li>
                     <?php elseif ($_SESSION['user']['role'] === 'vendedor'): ?>
                         <li class="nav-item">
@@ -78,4 +86,17 @@ if (session_status() == PHP_SESSION_NONE) {
             </ul>
         </div>
     </nav>
-    <div class="content">
+    <div class="content" style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <div class="error-container" style="text-align: center; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <h1 style="font-size: 2rem; margin-bottom: 10px;">Credenciais Erradas</h1>
+            <p style="font-size: 1.2rem; margin-bottom: 20px;">As credenciais fornecidas estão incorretas. Por favor, tente novamente.</p>
+            <a href="/oficina/index.php" style="text-decoration: none; color: #721c24; font-weight: bold; border: 1px solid #721c24; padding: 10px 20px; border-radius: 5px; transition: background-color 0.3s;">Voltar</a>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="/oficina/assets/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+<?php include '../views/footer.php'; ?>

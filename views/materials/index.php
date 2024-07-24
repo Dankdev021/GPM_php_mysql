@@ -19,11 +19,9 @@ include '../header.php';
 require_once '../../config/Config.php';
 require_once '../../classes/Material.php';
 
-
 $pdo = db_connect();
 $materialModel = new Material($pdo);
 $materials = $materialModel->getAll();
-
 ?>
 
 <div class="container mt-5">
@@ -33,7 +31,7 @@ $materials = $materialModel->getAll();
             <a href="../../scripts/download_materials.php" class="btn btn-success btn-sm">Download dos Materiais</a>
         </div>
     <?php endif; ?>
-    <table class="table table-striped">
+    <table class="table table-striped" id="materialsTable">
         <thead>
             <tr>
                 <th>Nome</th>
@@ -45,7 +43,7 @@ $materials = $materialModel->getAll();
                 <?php endif; ?>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="materialsBody">
             <?php foreach ($materials as $material): ?>
                 <tr>
                     <td><?php echo htmlspecialchars($material['name']); ?></td>
@@ -74,6 +72,13 @@ $materials = $materialModel->getAll();
             <?php endforeach; ?>
         </tbody>
     </table>
+
+    <!-- Paginação -->
+    <nav aria-label="Navegação de página">
+        <ul class="pagination justify-content-center" id="pagination">
+            <!-- Paginação será gerada dinamicamente -->
+        </ul>
+    </nav>
 </div>
 
 <!-- Modal de Compra -->
@@ -122,24 +127,111 @@ $materials = $materialModel->getAll();
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        var buyButtons = document.querySelectorAll('.btn-primary[data-toggle="modal"]');
-        
-        buyButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                var id = button.getAttribute('data-id');
-                var name = button.getAttribute('data-name');
-                var quantity = button.getAttribute('data-quantity');
+        const materials = <?php echo json_encode($materials); ?>;
+        const itemsPerPage = 6;
+        let currentPage = 1;
 
-                var modalProductId = document.getElementById('modalProductId');
-                var modalProductName = document.getElementById('modalProductName');
-                var modalQuantity = document.getElementById('modalQuantity');
-                var quantityHelp = document.getElementById('quantityHelp');
+        function renderTable(page) {
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedItems = materials.slice(start, end);
 
-                modalProductId.value = id;
-                modalProductName.textContent = name;
-                modalQuantity.setAttribute('max', quantity);
-                quantityHelp.textContent = 'Quantidade disponível: ' + quantity;
+            const tbody = document.getElementById('materialsBody');
+            tbody.innerHTML = '';
+
+            paginatedItems.forEach(material => {
+                const row = document.createElement('tr');
+
+                row.innerHTML = `
+                    <td>${material.name}</td>
+                    <td>${material.description}</td>
+                    <td>${material.quantity}</td>
+                    <td>R$ ${parseFloat(material.price).toFixed(2).replace('.', ',')}</td>
+                    <?php if ($isUserLoggedIn && $userRole === 'admin'): ?>
+                    <td>
+                        <a href="edit.php?id=${material.id}" class="btn btn-warning btn-sm" style="display: inline-block; margin-right: 5px;">Editar</a>
+                        <form action="../../controllers/MaterialController.php" method="POST" style="display: inline-block; margin: 0;">
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="id" value="${material.id}">
+                            <button type="submit" class="btn btn-danger btn-sm">Deletar</button>
+                        </form>
+                    </td>
+                    <?php elseif ($isUserLoggedIn && $userRole === 'cliente'): ?>
+                    <td>
+                        ${material.quantity > 0 ? `<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#buyModal" data-id="${material.id}" data-name="${material.name}" data-quantity="${material.quantity}">Comprar</button>` : `<span class="text-danger">Sem estoque</span>`}
+                    </td>
+                    <?php endif; ?>
+                `;
+                tbody.appendChild(row);
             });
+        }
+
+        function renderPagination() {
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            const totalPages = Math.ceil(materials.length / itemsPerPage);
+
+            const prevPageItem = document.createElement('li');
+            prevPageItem.className = 'page-item' + (currentPage === 1 ? ' disabled' : '');
+            prevPageItem.innerHTML = `<a class="page-link" href="#" tabindex="-1">Anterior</a>`;
+            prevPageItem.addEventListener('click', function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderTable(currentPage);
+                    renderPagination();
+                }
+            });
+            pagination.appendChild(prevPageItem);
+
+            for (let i = 1; i <= totalPages; i++) {
+                const pageItem = document.createElement('li');
+                pageItem.className = 'page-item' + (i === currentPage ? ' active' : '');
+                pageItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+                pageItem.addEventListener('click', function() {
+                    currentPage = i;
+                    renderTable(currentPage);
+                    renderPagination();
+                });
+                pagination.appendChild(pageItem);
+            }
+
+            const nextPageItem = document.createElement('li');
+            nextPageItem.className = 'page-item' + (currentPage === totalPages ? ' disabled' : '');
+            nextPageItem.innerHTML = `<a class="page-link" href="#">Próxima</a>`;
+            nextPageItem.addEventListener('click', function() {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderTable(currentPage);
+                    renderPagination();
+                }
+            });
+            pagination.appendChild(nextPageItem);
+        }
+
+        renderTable(currentPage);
+        renderPagination();
+
+        $('#buyModal').on('show.bs.modal', function(event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var name = button.data('name');
+            var quantity = button.data('quantity');
+
+            var modal = $(this);
+            modal.find('#modalProductId').val(id);
+            modal.find('#modalProductName').text(name);
+            modal.find('#modalQuantity').attr('max', quantity);
+            modal.find('#quantityHelp').text('Quantidade disponível: ' + quantity);
+        });
+
+        document.getElementById('modalQuantity').addEventListener('input', function() {
+            var quantity = parseInt(this.value, 10);
+            var maxQuantity = parseInt(this.getAttribute('max'), 10);
+
+            if (quantity < 1 || quantity > maxQuantity) {
+                this.value = Math.min(Math.max(quantity, 1), maxQuantity);
+            }
         });
     });
 </script>

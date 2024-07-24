@@ -33,7 +33,7 @@ $users = $userModel->getAll();
                 <th>Ações</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="usersBody">
             <?php foreach ($users as $user): ?>
                 <tr>
                     <td><?php echo htmlspecialchars($user['id']); ?></td>
@@ -50,6 +50,94 @@ $users = $userModel->getAll();
             <?php endforeach; ?>
         </tbody>
     </table>
+
+    <!-- Paginação -->
+    <nav aria-label="Navegação de página">
+        <ul class="pagination justify-content-center" id="pagination">
+            <!-- Paginação será gerada dinamicamente -->
+        </ul>
+    </nav>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const users = <?php echo json_encode($users); ?>;
+    const itemsPerPage = 10;
+    let currentPage = 1;
+
+    function renderTable(page) {
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const paginatedItems = users.slice(start, end);
+
+        const tbody = document.getElementById('usersBody');
+        tbody.innerHTML = '';
+
+        paginatedItems.forEach(user => {
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.username}</td>
+                <td>${user.role}</td>
+                <td>
+                    <form action="../../controllers/UserController.php" method="POST" style="display:inline-block;">
+                        <input type="hidden" name="action" value="delete">
+                        <input type="hidden" name="id" value="${user.id}">
+                        <button type="submit" class="btn btn-danger btn-sm">Deletar</button>
+                    </form>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    function renderPagination() {
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+
+        const totalPages = Math.ceil(users.length / itemsPerPage);
+
+        const prevPageItem = document.createElement('li');
+        prevPageItem.className = 'page-item' + (currentPage === 1 ? ' disabled' : '');
+        prevPageItem.innerHTML = `<a class="page-link" href="#" tabindex="-1">Anterior</a>`;
+        prevPageItem.addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable(currentPage);
+                renderPagination();
+            }
+        });
+        pagination.appendChild(prevPageItem);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const pageItem = document.createElement('li');
+            pageItem.className = 'page-item' + (i === currentPage ? ' active' : '');
+            pageItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+            pageItem.addEventListener('click', function() {
+                currentPage = i;
+                renderTable(currentPage);
+                renderPagination();
+            });
+            pagination.appendChild(pageItem);
+        }
+
+        const nextPageItem = document.createElement('li');
+        nextPageItem.className = 'page-item' + (currentPage === totalPages ? ' disabled' : '');
+        nextPageItem.innerHTML = `<a class="page-link" href="#">Próxima</a>`;
+        nextPageItem.addEventListener('click', function() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable(currentPage);
+                renderPagination();
+            }
+        });
+        pagination.appendChild(nextPageItem);
+    }
+
+    renderTable(currentPage);
+    renderPagination();
+});
+</script>
 
 <?php include '../footer.php'; ?>

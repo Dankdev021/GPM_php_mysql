@@ -6,7 +6,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
 redirectIfNotLoggedIn();
 checkAccess($_SESSION['user']['role'], ['admin', 'vendedor', 'cliente']);
 
@@ -55,7 +54,7 @@ if ($_SESSION['user']['role'] === 'vendedor') {
                 <?php endif; ?>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="serviceOrdersBody">
             <?php foreach ($serviceOrders as $serviceOrder): ?>
                 <tr>
                     <td><?php echo htmlspecialchars($serviceOrder['id']); ?></td>
@@ -108,29 +107,129 @@ if ($_SESSION['user']['role'] === 'vendedor') {
             <?php endforeach; ?>
         </tbody>
     </table>
+
+    <!-- Paginação -->
+    <nav aria-label="Navegação de página">
+        <ul class="pagination justify-content-center" id="pagination">
+            <!-- Paginação será gerada dinamicamente -->
+        </ul>
+    </nav>
 </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    var valorInput = document.getElementById('estimated_cost');
+    const serviceOrders = <?php echo json_encode($serviceOrders); ?>;
+    const itemsPerPage = 6;
+    let currentPage = 1;
 
-    valorInput.addEventListener('input', function(e) {
-        var value = e.target.value;
+    function renderTable(page) {
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const paginatedItems = serviceOrders.slice(start, end);
 
-        value = value.replace(/\D/g, ''); // Remove todos os caracteres que não são números
+        const tbody = document.getElementById('serviceOrdersBody');
+        tbody.innerHTML = '';
 
-        if (value.length > 2) {
-            value = value.replace(/^0+/, ''); // Remove zeros à esquerda
+        paginatedItems.forEach(serviceOrder => {
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td>${serviceOrder.id}</td>
+                <td>${serviceOrder.customer_name}</td>
+                <td>${serviceOrder.mechanic_name}</td>
+                <td>${serviceOrder.service_type}</td>
+                <td>${serviceOrder.vehicle_model}</td>
+                <td>${serviceOrder.vehicle_license_plate}</td>
+                <td>${serviceOrder.description}</td>
+                <td>
+                    <?php if ($_SESSION['user']['role'] !== 'cliente'): ?>
+                        <form action="../../controllers/ServiceOrderController.php" method="POST">
+                            <input type="hidden" name="action" value="update_cost">
+                            <input type="hidden" name="id" value="${serviceOrder.id}">
+                            <input type="text" value="${serviceOrder.estimated_cost}" name="estimated_cost" class="form-control" id="estimated_cost" placeholder="${serviceOrder.estimated_cost}">
+                            <button type="submit" class="btn btn-primary btn-sm mt-2">Salvar</button>
+                        </form>
+                    <?php else: ?>
+                        ${serviceOrder.estimated_cost}
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <?php if ($_SESSION['user']['role'] !== 'cliente'): ?>
+                        <form action="../../controllers/ServiceOrderController.php" method="POST">
+                            <input type="hidden" name="action" value="update_status">
+                            <input type="hidden" name="id" value="${serviceOrder.id}">
+                            <select name="status" class="form-control">
+                                <option value="pendente" ${serviceOrder.status === 'pendente' ? 'selected' : ''}>Pendente</option>
+                                <option value="concluido" ${serviceOrder.status === 'concluido' ? 'selected' : ''}>Concluído</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary btn-sm mt-2">Salvar</button>
+                        </form>
+                    <?php else: ?>
+                        ${serviceOrder.status}
+                    <?php endif; ?>
+                </td>
+                <td>${serviceOrder.created_at}</td>
+                <td>${serviceOrder.updated_at}</td>
+                <?php if ($_SESSION['user']['role'] !== 'cliente'): ?>
+                    <td style="display: flex;">
+                        <a href="edit.php?id=${serviceOrder.id}" class="btn btn-warning btn-sm" style="display: inline-block; margin-right: 5px;">Editar</a>
+                        <form action="../../controllers/ServiceOrderController.php" method="POST" style="display: inline-block; margin: 0; padding: 0;">
+                            <input type="hidden" name="action" value="delete">
+                            <input type="hidden" name="id" value="${serviceOrder.id}">
+                            <button type="submit" class="btn btn-danger btn-sm" style="display: inline-block;">Deletar</button>
+                        </form>
+                    </td>
+                <?php endif; ?>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    function renderPagination() {
+        const pagination = document.getElementById('pagination');
+        pagination.innerHTML = '';
+
+        const totalPages = Math.ceil(serviceOrders.length / itemsPerPage);
+
+        const prevPageItem = document.createElement('li');
+        prevPageItem.className = 'page-item' + (currentPage === 1 ? ' disabled' : '');
+        prevPageItem.innerHTML = `<a class="page-link" href="#" tabindex="-1">Anterior</a>`;
+        prevPageItem.addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable(currentPage);
+                renderPagination();
+            }
+        });
+        pagination.appendChild(prevPageItem);
+
+        for (let i = 1; i <= totalPages; i++) {
+            const pageItem = document.createElement('li');
+            pageItem.className = 'page-item' + (i === currentPage ? ' active' : '');
+            pageItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+            pageItem.addEventListener('click', function() {
+                currentPage = i;
+                renderTable(currentPage);
+                renderPagination();
+            });
+            pagination.appendChild(pageItem);
         }
 
-        if (value.length <= 2) {
-            value = ('00' + value).slice(-3);
-        }
+        const nextPageItem = document.createElement('li');
+        nextPageItem.className = 'page-item' + (currentPage === totalPages ? ' disabled' : '');
+        nextPageItem.innerHTML = `<a class="page-link" href="#">Próxima</a>`;
+        nextPageItem.addEventListener('click', function() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable(currentPage);
+                renderPagination();
+            }
+        });
+        pagination.appendChild(nextPageItem);
+    }
 
-        value = value.replace(/(\d+)(\d{2})/, '$1,$2'); // Adiciona a vírgula
-
-        e.target.value = value;
-    });
+    renderTable(currentPage);
+    renderPagination();
 });
 </script>
 
